@@ -6,5 +6,8 @@ dnsmb1: dnsmb1.cu product.txt matrix1.txt matrix2.txt
 %.txt:
 	wget http://www.cs.uakron.edu/~toneil/cs477/Labs/lab5/$@
 
+report.pdf: report.md
+	pandoc report.md -V geometry:margin=1in -o report.pdf
+
 clean:
-	rm  dnsmb1 *.txt
+	rm -f dnsmb1 *.txt report.pdf
