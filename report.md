@@ -94,3 +94,54 @@ option to display the time stamp (with microseconds) for each system call. I was
 able to clearly see that the tesla server hung on the `open("/dev/nvidia0",
 O_RDWR)` call, returning a `EINTR` indicating that the device was actually busy.
 
+## Experiment 2
+
+For the second experiment we will be converting the CUDA Matrix
+Multiplication program over to using a Blocked Matrix Multiplication algorithm.
+
+
+
+
+# Windows
+
+For the next two experiments I will be using one of the University of Akron lab
+machines that include a NVIDIA GTX 480 CUDA capable graphics device. For the
+setup we can use the same two programs we used on Linux (including the change
+for `helper_cuda.h`). The primary difference here is how we builld the program.
+
+A `winrun.bat` batch file is included to compile and run the program, however I
+did have to make a small change to the environment `PATH` variable to include
+the Visual Studio 10.0 CL compiler.
+
+    set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio 10.0\VC\bin
+
+I completely discarded the Makefile used on my Linux machine.
+
+I did spend more time than I would like to admit attempting to debug why the
+program would not work on the 'older' windows machines in the lab before
+realizing that I needed to use the 'newer' machines. On the older machines
+things would compile fine, however the computed matrix would always be filled
+with zeros.
+
+## Experiment 1
+
+I ran the program ten separate times and recorded the execution times below:
+
+| Trial 1      | Trial 2      | Trial 3      | Trial 4      | Trial 5      | Trial 6      | Trial 7      | Trial 8      | Trial 9      | Trial 10     |
+| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------|
+| $280.969\mu$ | $321.888\mu$ | $280.640\mu$ | $313.728\mu$ | $392.800\mu$ | $279.040\mu$ | $280.352\mu$ | $309.472\mu$ | $281.920\mu$ | $280.544\mu$ |
+
+| Minimum time | Maximum time | Average Time | STD        |
+| ------------ | ------------ | ------------ | ---------- |
+| $279.040\mu$ | $392.800\mu$ | $302.100\mu$ | $35.89\mu$ |
+
+### Discussion
+
+Interestingly enough the results were similar to how my Linux desktop machine
+behaved in terms of variations of times. We have a standard deviation of $35\mu
+s$, which is certainly quite a large jump from the Tesla machine's minuscule
+$2.575\mu s$. We can also note that the times between the lab machines GTX 480
+consumer grade graphics cards were rather comparable to the Tesla machines
+server grade device.
+
+## Experiment 2
