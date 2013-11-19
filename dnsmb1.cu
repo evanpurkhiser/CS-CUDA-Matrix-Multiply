@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <cutil.h>
+#include <helper_cuda.h>
 
 #define TILE_WIDTH 8
 
