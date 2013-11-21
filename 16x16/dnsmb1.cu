@@ -18,9 +18,14 @@ __global__ void MatMulKernel(float* d_M, float* d_N, float* d_P, int Width)
    __shared__ float partialSum[TILE_WIDTH][TILE_WIDTH];
 
    int tx = threadIdx.x, ty = threadIdx.y, bx = blockIdx.x;
+   int group_id = blockIdx.y;
 
-   Mds[tx][ty] = d_M[tx * TILE_WIDTH + ty];
-   if (tx == 0) Nds[ty] = d_N[ty * TILE_WIDTH + bx];
+   int x_offset  = (group_id / 4) * TILE_WIDTH;
+   int y_offset  = (group_id % 2) * TILE_WIDTH;
+   int bx_offset = ((group_id / 2) % 2) * TILE_WIDTH;
+
+   Mds[tx][ty] = d_M[(tx + x_offset) * Width + ty + y_offset];
+   if (tx == 0) Nds[ty] = d_N[(ty + y_offset) * Width + bx + bx_offset];
    __syncthreads();
 
    partialSum[tx][ty] = Mds[tx][ty] * Nds[ty];
@@ -48,7 +53,7 @@ void MatrixMultiplication(float* M, float* N, float* P, int Width)
    cudaMalloc((void**) &Pd, size);
    cudaMemset(Pd, 0, size);
 
-   dim3 dimGrid(TILE_WIDTH,1,1);
+   dim3 dimGrid(TILE_WIDTH, 8);
    dim3 dimBlock(TILE_WIDTH, TILE_WIDTH);
 
    // Launch the device computation threads
