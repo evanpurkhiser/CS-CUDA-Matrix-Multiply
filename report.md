@@ -102,8 +102,60 @@ For the second experiment we will be converting the CUDA Matrix
 Multiplication program over to using a Blocked Matrix Multiplication algorithm
 and calculating the product of two 16x16 matrices.
 
+This was actually quite a bit trickier than first anticipated. As shown in the
+product description we would need to break the matrix up into four tiles, each
+tile has two matrix products that must be calculated and the added together,
+giving us a total of 8 extra groups to do work.
 
+The approach I took to getting this working is as follows:
 
+ 1. Add a second dimension to the block grid of size 8. This dimension will be
+	our 'group id' which will be used to determine which tile offset we are calculating.
+
+ 2. Determine which tile we are calculating in the device function by looking at
+	our group ID and calculating rows and column offsets.
+
+ 3. Add the calculated product to into the same product index. For this
+	opeartion we must use the `atomicAdd` CUDA function since we are reading and
+	writing global memory.
+
+Another important change I was required to make was to ensure that the memory
+for the product was zeroed out on the device.
+
+Again, I ran the program with the command `for r in {1..10}; do ./dnsmb1; done`.
+
+\pagebreak
+
+| Trial 1      | Trial 2      | Trial 3      | Trial 4      | Trial 5      | Trial 6      | Trial 7      | Trial 8      | Trial 9      | Trial 10     |
+| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------|
+| $282.720\mu$ | $284.576\mu$ | $282.752\mu$ | $288.608\mu$ | $284.992\mu$ | $290.656\mu$ | $287.360\mu$ | $285.088\mu$ | $292.384\mu$ | $287.520\mu$ |
+
+| Minimum time | Maximum time | Average Time | STD      |
+| ------------ | ------------ | ------------ | -------- |
+| $282.720\mu$ | $292.387\mu$ | $286.700\mu$ | $3.234$  |
+
+And again, just for fun, here is some extra bonus data from executing the program
+on my desktop machine
+
+| Minimum time | Maximum time | Average Time | STD        |
+| ------------ | ------------ | ------------ | ---------- |
+| $147.424\mu$ | $208.416\mu$ | $197.400\mu$ | $18.16\mu$ |
+
+### Discussion
+
+The most obvious thing we can notice here is that there doesn't seem to actually
+be any sort of improvement in speed. In fact, on average this version of the
+program actually runs $2\mu$ seconds slower than the 8x8 non-tiled program.
+Though, we should remember that we are actually calculating a matrix that is a
+power of two larger than the first experiment.
+
+Again we can see that the standard deviation of times on the tesla server is
+much lower than that of the times on my desktop card. This time however, we can
+notice that the standard deviation of my desktop machine was much lower. To
+confirm this I ran the program over 1000 times and calculated the standard
+deviation from the reported times. With over 1000 trials I saw a standard
+deviation of $31.840$, which is slightly larger than the previously calculated
+STD, but nowhere near as big of a STD as shown in the first experiment.
 
 # Windows
 
