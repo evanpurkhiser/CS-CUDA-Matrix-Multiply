@@ -31,11 +31,9 @@ __global__ void MatMulKernel(float* d_M, float* d_N, float* d_P, int Width)
    partialSum[tx][ty] = Mds[tx][ty] * Nds[ty];
    __syncthreads();
 
-   if (ty <  4) {
-      partialSum[tx][ty] += partialSum[tx][ty + 4];
-      if (ty <  2) partialSum[tx][ty] += partialSum[tx][ty + 2];
-      if (ty == 0) d_P[tx * TILE_WIDTH + bx] = partialSum[tx][ty] + partialSum[tx][ty + 1];
-   }
+   if (ty <  4) partialSum[tx][ty] += partialSum[tx][ty + 4];
+   if (ty <  2) partialSum[tx][ty] += partialSum[tx][ty + 2];
+   if (ty == 0) atomicAdd(&d_P[(tx + x_offset) * Width + bx + bx_offset], partialSum[tx][ty] + partialSum[tx][ty + 1]);
 }
 
 void MatrixMultiplication(float* M, float* N, float* P, int Width)
