@@ -25,7 +25,9 @@ path of the CUDA toolkit.
 First, since we are using CUDA 5 we must changed the `cutil.h` include to
 `helper_cuda.h`.
 
-To handle compiling the program on Linux I created a small Makefile that will 
+To handle compiling the program on Linux I created a small Makefile that will
+download the required data files and compile the program using a specified
+`CUDAPATH`.
 
 ```makefile
 CUDAPATH=/opt/cuda
@@ -81,7 +83,7 @@ standard error for some reason however).
 
 Comparing this to my desktop Linux machine we can see there was actually a much
 higher standard deviation of the 10 trials, with the maximum time being more
-than 4 times that of the minim execution time. I sepculate that this could be in
+than 4 times that of the minim execution time. I speculate that this could be in
 part due to the difference in the "consumer" grade graphics cards versus the
 "server" grade devices.
 
@@ -97,7 +99,8 @@ O_RDWR)` call, returning a `EINTR` indicating that the device was actually busy.
 ## Experiment 2
 
 For the second experiment we will be converting the CUDA Matrix
-Multiplication program over to using a Blocked Matrix Multiplication algorithm.
+Multiplication program over to using a Blocked Matrix Multiplication algorithm
+and calculating the product of two 16x16 matrices.
 
 
 
@@ -107,7 +110,7 @@ Multiplication program over to using a Blocked Matrix Multiplication algorithm.
 For the next two experiments I will be using one of the University of Akron lab
 machines that include a NVIDIA GTX 480 CUDA capable graphics device. For the
 setup we can use the same two programs we used on Linux (including the change
-for `helper_cuda.h`). The primary difference here is how we builld the program.
+for `helper_cuda.h`). The primary difference here is how we build the program.
 
 A `winrun.bat` batch file is included to compile and run the program, however I
 did have to make a small change to the environment `PATH` variable to include
