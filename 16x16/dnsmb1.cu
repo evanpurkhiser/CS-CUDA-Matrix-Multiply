@@ -46,6 +46,7 @@ void MatrixMultiplication(float* M, float* N, float* P, int Width)
 
    // Allocate P on the device
    cudaMalloc((void**) &Pd, size);
+   cudaMemset(Pd, 0, size);
 
    dim3 dimGrid(TILE_WIDTH,1,1);
    dim3 dimBlock(TILE_WIDTH, TILE_WIDTH);
