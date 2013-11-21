@@ -61,7 +61,7 @@ void MatrixMultiplication(float* M, float* N, float* P, int Width)
 
 int main()
 {
-   unsigned int Width = 8;
+   unsigned int Width = 16;
    cudaEvent_t start, stop;
    float elapsedTime;
 
