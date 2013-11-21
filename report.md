@@ -200,3 +200,5 @@ consumer grade graphics cards were rather comparable to the Tesla machines
 server grade device.
 
 ## Experiment 2
+
+I will be using the same program used in the Linux Experiment 2.
