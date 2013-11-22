@@ -180,7 +180,10 @@ with zeros.
 
 ## Experiment 1
 
-I ran the program ten separate times and recorded the execution times below:
+I ran the program ten separate times and recorded the execution times.
+
+The results are as follows:
+
 
 | Trial 1      | Trial 2      | Trial 3      | Trial 4      | Trial 5      | Trial 6      | Trial 7      | Trial 8      | Trial 9      | Trial 10     |
 | -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------|
@@ -202,3 +205,20 @@ server grade device.
 ## Experiment 2
 
 I will be using the same program used in the Linux Experiment 2.
+
+| Trial 1      | Trial 2      | Trial 3      | Trial 4      | Trial 5      | Trial 6      | Trial 7      | Trial 8      | Trial 9      | Trial 10     |
+| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------| -------------|
+| $290.848\mu$ | $291.520\mu$ | $291.968\mu$ | $291.968\mu$ | $335.136\mu$ | $318.720\mu$ | $325.824\mu$ | $453.920\mu$ | $289.760\mu$ | $283.904\mu$ |
+
+| Minimum time | Maximum time | Average Time | STD        |
+| ------------ | ------------ | ------------ | ---------- |
+| $283.904\mu$ | $453.920\mu$ | $317.400\mu$ | $16.19\mu$ |
+
+### Discussion
+
+We can see that our results are actually slightly slower than running the
+programs on the tesla server. Also, just as in the Linux experiment, we can see
+that our times are actually only a fraction slower than the 8x8 times in the
+first experiment done on windows. Again, the standard deviation seems to be a
+little more consistent compared to the first experiment.
+
